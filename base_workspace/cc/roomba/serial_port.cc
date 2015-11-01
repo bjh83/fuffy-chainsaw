@@ -23,7 +23,7 @@ int ModeToInt(SerialPort::Mode mode) {
 Error SerialPort::Open(const std::string& path, Mode mode) {
   int raw_mode = ModeToInt(mode);
   ERROR_IF(raw_mode == -1, "Invalid mode given.");
-  int fd_ = open(path.c_str(), raw_mode | O_CREAT, S_IRUSR | S_IWUSR);
+  fd_ = open(path.c_str(), raw_mode | O_CREAT, S_IRUSR | S_IWUSR);
   CHECK_SYSCALL(fd_, "Open failed");
   return Error::Success();
 }
