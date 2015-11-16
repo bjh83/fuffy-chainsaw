@@ -17,11 +17,30 @@ int main() {
     std::cout << error.error_message() << std::endl;
     return -1;
   }
-  error = controller->SendCommand(RoombaController::Command::START);
+  error = controller->Start();
   if (!error) {
     std::cout << error.error_message() << std::endl;
     return -1;
   }
-  sleep(5);
+  sleep(1);
+  error = controller->Safe();
+  if (!error) {
+    std::cout << error.error_message() << std::endl;
+    return -1;
+  }
+  sleep(1);
+  // Turn in place clockwise.
+  error = controller->Drive(500, 0xffff);
+  if (!error) {
+    std::cout << error.error_message() << std::endl;
+    return -1;
+  }
+  sleep(1);
+  error = controller->Start();
+  if (!error) {
+    std::cout << error.error_message() << std::endl;
+    return -1;
+  }
+  sleep(1);
   return 0;
 }

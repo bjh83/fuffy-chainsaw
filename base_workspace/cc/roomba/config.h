@@ -4,7 +4,7 @@
 #include <string>
 
 namespace roomba {
-static const std::string kSerialPortPath = "/dev/ttyO1";
+static const std::string kSerialPortPath = "/dev/ttyUSB0";
 } // namespace roomba
 
 #endif // ROOMBA_CONFIG_H_

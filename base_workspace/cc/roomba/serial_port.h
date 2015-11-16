@@ -1,6 +1,9 @@
 #ifndef ROOMBA_SERIAL_PORT_H_
 #define ROOMBA_SERIAL_PORT_H_
 
+#include <termios.h>
+#include <unistd.h>
+
 #include <string>
 #include "cc/roomba/error.h"
 
@@ -21,6 +24,8 @@ class SerialPort {
   virtual Error Read(void* buffer, size_t* amount_written, size_t size);
 
   virtual Error Write(void* buffer, size_t size);
+
+  virtual Error SetBaudRate(speed_t baud_rate);
 
   virtual Error Close();
 
