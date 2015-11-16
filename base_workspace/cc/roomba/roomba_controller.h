@@ -15,44 +15,75 @@ class RoombaController {
     START = 128,
     SAFE = 131,
     FULL = 132,
-    DEMO = 136,
     DRIVE = 137,
     DRIVE_DIRECT = 145,
     LEDS = 139,
     PLAY_SONG = 141,
+    SENSORS = 142,
+  };
+
+  enum class PacketID : uint8_t {
+    BUMP_AND_WHEEL_DROP = 7,
+    WALL = 8,
+    CLIFF_LEFT = 9,
+    CLIFF_FRONT_LEFT = 10,
+    CLIFF_FRONT_RIGHT = 11,
+    CLIFF_RIGHT = 12,
+    VIRTUAL_WALL = 13,
+    DISTANCE = 19,
+    ANGLE = 20,
+  };
+
+  struct BumpAndWheelDropResponse {
+    bool wheel_drop_caster;
+    bool wheel_drop_left;
+    bool wheel_drop_right;
+    bool bump_left;
+    bool bump_rignt;
   };
 
   RoombaController(std::unique_ptr<SerialPort> serial_port);
 
-  Error Start() { return SendCommand(Command::START, {}); }
+  Error Start();
 
-  Error Safe() { return SendCommand(Command::SAFE, {}); }
+  Error Safe();
 
-  Error Full() { return SendCommand(Command::FULL, {}); }
+  Error Full();
 
-  Error Demo(uint8_t demo_number) {
-    return SendCommand(Command::DEMO, {demo_number});
-  }
+  Error Drive(int16_t velocity, int16_t radius);
 
-  Error Drive(int16_t velocity, int16_t radius) {
-    uint8_t velocity_lsb = static_cast<uint8_t>(velocity);
-    uint8_t velocity_msb = static_cast<uint8_t>(velocity >> 8);
-    uint8_t radius_lsb = static_cast<uint8_t>(radius);
-    uint8_t radius_msb = static_cast<uint8_t>(radius >> 8);
-    std::vector<uint8_t> args = {
-      velocity_msb, velocity_lsb, radius_msb, radius_lsb
-    };
-    return SendCommand(Command::DRIVE, args);
-  }
+  Error DriveDirect(int16_t left_velocity, int16_t right_velocity);
 
-  Error PlaySong(uint8_t song_number) {
-    return SendCommand(Command::PLAY_SONG, {song_number});
-  }
+  Error PlaySong(uint8_t song_number);
+
+  Error ReadSensor(PacketID sensor_id, std::vector<uint8_t>* response);
+
+  Error ReadBumpsAndWheelDropsSensor(BumpAndWheelDropResponse* response);
+
+  Error ReadWall(bool* is_wall_present);
+
+  Error ReadCliffLeft(bool* is_cliff_present);
+
+  Error ReadCliffFrontLeft(bool* is_cliff_present);
+
+  Error ReadCliffFrontRight(bool* is_cliff_present);
+
+  Error ReadCliffRight(bool* is_cliff_present);
+
+  Error ReadVirtualWall(bool* is_wall_present);
+
+  Error ReadDistance(int16_t* distance);
+
+  Error ReadAngle(int16_t* degrees);
 
   Error SendCommand(Command command, const std::vector<uint8_t>& data);
 
+  Error ReadResponse(std::vector<uint8_t>* response);
+
  private:
   std::unique_ptr<SerialPort> serial_port_;
+
+  Error ReadSensorWithBoolResponse(PacketID sensor_id, bool* response);
 };
 
 } // namespace roomba

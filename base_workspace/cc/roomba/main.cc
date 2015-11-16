@@ -30,7 +30,7 @@ int main() {
   }
   sleep(1);
   // Turn in place clockwise.
-  error = controller->Drive(500, 0xffff);
+  error = controller->DriveDirect(250, -250);
   if (!error) {
     std::cout << error.error_message() << std::endl;
     return -1;
