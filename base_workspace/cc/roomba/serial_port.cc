@@ -23,7 +23,7 @@ int ModeToInt(SerialPort::Mode mode) {
 Error SerialPort::Open(const std::string& path, Mode mode) {
   int raw_mode = ModeToInt(mode);
   ERROR_IF(raw_mode == -1, "Invalid mode given.");
-  fd_ = open(path.c_str(), raw_mode | O_CREAT, S_IRUSR | S_IWUSR);
+  fd_ = open(path.c_str(), raw_mode | O_NONBLOCK | O_NOCTTY, S_IRUSR | S_IWUSR);
   CHECK_SYSCALL(fd_, "Open failed");
   return Error::Success();
 }
@@ -46,7 +46,7 @@ Error SerialPort::SetBaudRate(speed_t baud_rate) {
 
   struct termios serial_attr;
   CHECK_SYSCALL(tcgetattr(fd_, &serial_attr), "Setting baud rate failed");
-  CHECK_SYSCALL(cfsetospeed(&serial_attr, baud_rate), "Setting baud rate failed");
+  CHECK_SYSCALL(cfsetspeed(&serial_attr, baud_rate), "Setting baud rate failed");
   CHECK_SYSCALL(tcsetattr(fd_, TCSADRAIN, &serial_attr), "Setting baud rate failed");
   return Error::Success();
 }
