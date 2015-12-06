@@ -56,6 +56,14 @@ Error RoombaController::DriveDirect(int16_t left_velocity, int16_t right_velocit
   return SendCommand(Command::DRIVE_DIRECT, args);
 }
 
+Error RoombaController::SetSong(uint8_t song_number, const std::vector<uint8_t>& song_data) {
+  // The data contains a note and duration, so half of it is the number of notes.
+  uint8_t song_length = song_data.size() / 2;
+  std::vector<uint8_t> data = {song_number, song_length};
+  data.insert(data.end(), song_data.begin(), song_data.end());
+  return SendCommand(Command::SONG, data);
+}
+
 Error RoombaController::PlaySong(uint8_t song_number) {
   return SendCommand(Command::PLAY_SONG, {song_number});
 }

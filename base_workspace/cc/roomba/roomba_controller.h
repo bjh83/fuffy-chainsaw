@@ -18,6 +18,7 @@ class RoombaController {
     DRIVE = 137,
     DRIVE_DIRECT = 145,
     LEDS = 139,
+    SONG = 140,
     PLAY_SONG = 141,
     SENSORS = 142,
   };
@@ -54,6 +55,8 @@ class RoombaController {
   Error Drive(int16_t velocity, int16_t radius);
 
   Error DriveDirect(int16_t left_velocity, int16_t right_velocity);
+
+  Error SetSong(uint8_t song_number, const std::vector<uint8_t>& song_data);
 
   Error PlaySong(uint8_t song_number);
 
