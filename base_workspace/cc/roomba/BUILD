@@ -2,6 +2,7 @@ cc_binary(
   name = "roomba",
   srcs = ["main.cc"],
   deps = [
+    ":config",
     ":error",
     ":roomba_controller",
     ":roomba_controller_factory",
