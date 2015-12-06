@@ -3,8 +3,15 @@
 
 #include <string>
 
+#ifdef __linux__
+#define SERIAL_PATH "/dev/ttyUSB0"
+#elif __APPLE__
+#define SERIAL_PATH "/dev/cu.usbserial-DA017LYP"
+#endif
+
 namespace roomba {
-static const std::string kSerialPortPath = "/dev/ttyUSB0";
+
+static const std::string kSerialPortPath = SERIAL_PATH;
 } // namespace roomba
 
 #endif // ROOMBA_CONFIG_H_
