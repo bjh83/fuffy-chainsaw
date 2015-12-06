@@ -107,6 +107,10 @@ Error RoombaController::ReadVirtualWall(bool* is_wall_present) {
   return ReadSensorWithBoolResponse(PacketID::VIRTUAL_WALL, is_wall_present);
 }
 
+Error RoombaController::IsSongPlaying(bool* is_song_playing) {
+  return ReadSensorWithBoolResponse(PacketID::IS_SONG_PLAYING, is_song_playing);
+}
+
 Error RoombaController::ReadDistance(int16_t* distance) {
   vector<uint8_t> response_vector(2);
   CHECK_ERROR(ReadSensor(PacketID::DISTANCE, &response_vector));

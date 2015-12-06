@@ -32,6 +32,7 @@ class RoombaController {
     VIRTUAL_WALL = 13,
     DISTANCE = 19,
     ANGLE = 20,
+    IS_SONG_PLAYING = 37,
   };
 
   struct BumpAndWheelDropResponse {
@@ -71,6 +72,8 @@ class RoombaController {
   Error ReadCliffRight(bool* is_cliff_present);
 
   Error ReadVirtualWall(bool* is_wall_present);
+
+  Error IsSongPlaying(bool* is_song_playing);
 
   Error ReadDistance(int16_t* distance);
 
